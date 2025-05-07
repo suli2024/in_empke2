@@ -9,13 +9,37 @@ const salaryInput = document.querySelector('#salary')
 
 const empModalLabel = document.querySelector('#empModalLabel')
 
-
-
 const url = 'http://localhost:8000/api/employees'
-
 var addMode = true;
 
+saveButton.addEventListener('click', () => {
 
+  if(addMode) {
+    const emp = {
+      name: nameInput.value,
+      city: cityInput.value,
+      salary: salaryInput.value
+    }    
+    addEmployee(emp)
+  }else {
+    const emp = {
+      id: idInput.value,
+      name: nameInput.value,
+      city: cityInput.value,
+      salary: salaryInput.value
+    }
+    updateEmployee(emp)
+  }
+  
+  clearFields()
+  
+})
+
+addButton.addEventListener('click', () => {
+  clearFields()
+  addMode = true
+  empModalLabel.innerHTML = 'Hozzáadás'
+})
 
 function getEmployees() {
   fetch(url)
@@ -27,8 +51,6 @@ function getEmployees() {
     renderTbody(result.data)
   }); 
 }
-
-getEmployees()
 
 function renderTbody(empList) {
   var tbodyContent = '';
@@ -64,36 +86,6 @@ function renderTbody(empList) {
 
 }
 
-/* Create művelet */
-
-saveButton.addEventListener('click', () => {
-
-  if(addMode) {
-    const emp = {
-      name: nameInput.value,
-      city: cityInput.value,
-      salary: salaryInput.value
-    }    
-    addEmployee(emp)
-  }else {
-    const emp = {
-      id: idInput.value,
-      name: nameInput.value,
-      city: cityInput.value,
-      salary: salaryInput.value
-    }
-    updateEmployee(emp)
-  }
-  
-  clearFields()
-  
-})
-
-addButton.addEventListener('click', () => {
-  clearFields()
-  addMode = true
-  empModalLabel.innerHTML = 'Hozzáadás'
-})
 
 function clearFields() {
   idInput.value = ''
@@ -170,3 +162,5 @@ function updateEmployee(emp) {
   addMode = true;
   empModalLabel.innerHTML = 'Hozzáadás'
 }
+
+getEmployees()
