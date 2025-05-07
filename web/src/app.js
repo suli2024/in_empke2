@@ -1,13 +1,19 @@
 const tbody = document.querySelector('#tbody')
 const saveButton = document.querySelector('#saveButton')
+const addButton = document.querySelector('#addButton')
 
 const idInput = document.querySelector('#id')
 const nameInput = document.querySelector('#name')
 const cityInput = document.querySelector('#city')
 const salaryInput = document.querySelector('#salary')
 
+const empModalLabel = document.querySelector('#empModalLabel')
+
+
 
 const url = 'http://localhost:8000/api/employees'
+
+var addMode = true;
 
 
 
@@ -39,11 +45,13 @@ function renderTbody(empList) {
       </td>
       <td>
         <button class="btn btn-secondary"
-        onclick="updateEmployee()"
+        onclick="editEmployee()"
         data-id="${emp.id}"
         data-name="${emp.name}"
         data-city="${emp.city}"
         data-salary="${emp.salary}"
+        data-bs-toggle="modal" 
+        data-bs-target="#empModal"        
         >Szerkesztés</button>
       </td>
 
@@ -59,17 +67,32 @@ function renderTbody(empList) {
 /* Create művelet */
 
 saveButton.addEventListener('click', () => {
-  
-  //JavaScript objektum
-  const emp = {
-    name: nameInput.value,
-    city: cityInput.value,
-    salary: salaryInput.value
-  }
 
-  addEmployee(emp)
+  if(addMode) {
+    const emp = {
+      name: nameInput.value,
+      city: cityInput.value,
+      salary: salaryInput.value
+    }    
+    addEmployee(emp)
+  }else {
+    const emp = {
+      id: idInput.value,
+      name: nameInput.value,
+      city: cityInput.value,
+      salary: salaryInput.value
+    }
+    updateEmployee(emp)
+  }
+  
   clearFields()
   
+})
+
+addButton.addEventListener('click', () => {
+  clearFields()
+  addMode = true
+  empModalLabel.innerHTML = 'Hozzáadás'
 })
 
 function clearFields() {
@@ -109,8 +132,9 @@ function deleteEmployee(id){
   
 }
 
-function updateEmployee() {
- 
+function editEmployee() {
+  addMode = false; 
+  empModalLabel.innerHTML = 'Szerkesztés'
   const emp = {
     id: this.event.target.getAttribute('data-id'),
     name: this.event.target.getAttribute('data-name'),
@@ -118,5 +142,31 @@ function updateEmployee() {
     salary: this.event.target.getAttribute('data-salary'),
   }
 
-  console.log(emp)
+  idInput.value = emp.id;
+  nameInput.value = emp.name;
+  cityInput.value = emp.city;
+  salaryInput.value = emp.salary;
+
+  
+}
+
+function updateEmployee(emp) {
+  const extUrl = url + '/' + emp.id
+ 
+  fetch(extUrl, {
+    method: 'put', 
+    body: JSON.stringify(emp),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+    getEmployees()
+  })
+  .catch(err => console.log(err))  
+
+  addMode = true;
+  empModalLabel.innerHTML = 'Hozzáadás'
 }
