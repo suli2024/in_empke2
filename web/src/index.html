@@ -31,7 +31,8 @@
             <label for="id"
             class="form-label">Id</label>
             <input type="text" id="id"
-            class="form-control" readonly>
+            class="form-control" readonly
+            disabled>
           </div>
           <div class="input">
             <label for="name"
@@ -87,6 +88,39 @@
 
 
   </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" 
+        id="exampleModalLabel">Törlés figyelmeztetés</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Biztostan törli?
+      </div>
+      <div class="modal-footer">
+        <button type="button" 
+        class="btn btn-secondary" 
+        data-bs-dismiss="modal"
+        >Mégsem</button>
+
+
+        <button type="button" 
+        class="btn btn-primary"
+        onclick="deleteEmployee()"
+        data-bs-dismiss="modal"
+        >
+        Törlés
+      </button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script src="bootstrap.js"></script>
   <script src="app.js"></script>  
 </body>
