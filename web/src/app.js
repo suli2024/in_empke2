@@ -64,10 +64,12 @@ function renderTbody(empList) {
       <td class="mini miniCity">${emp.city}</td>      
       <td class="mini miniSalary">${emp.salary}</td>
       <td class="mini">
-        <button class="btn btn-warning me-3" 
+        <button 
+        class="btn btn-warning me-3 my-1" 
         onclick="askDeleteEmployee(${emp.id})">Törlés</button>
 
-        <button class="btn btn-secondary"
+        <button 
+        class="btn btn-secondary my-1"
         onclick="editEmployee()"
         data-id="${emp.id}"
         data-name="${emp.name}"
